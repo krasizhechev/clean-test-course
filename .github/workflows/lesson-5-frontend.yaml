@@ -30,7 +30,7 @@ jobs:
         run: echo Placeholder for Deployment
   security_test:
     needs: [deploy]
-    runs-on:ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
     - name: ZAP Baseline Scan
       uses: zaproxy/action-baseline@v0.15.0
