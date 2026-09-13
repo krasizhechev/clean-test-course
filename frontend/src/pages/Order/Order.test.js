@@ -19,15 +19,13 @@ describe('Test Order', () => {
       { item: 'Test 3', quantity: 3 },
     ];
   });
-
   afterEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   test('Test Delivery Fee', async () => {
-    //Add a Test to verify that delivery fee shows up here
-    //Act:
-    //Setup the Mock API
+    //ACT
+    // Setup the Mock API.
     setupMock();
     //Call the page
     render(
@@ -35,16 +33,17 @@ describe('Test Order', () => {
         <Order />
       </OrderContext.Provider>
     );
-    //Assert: replace the return true.
+
+    //ASSERT
+    //Check for subtotal and delivery fee
     await waitFor(() => {
-      return true;
+      expect(screen.getAllByText('$2.50')).toHaveLength(1);
     });
   });
 
   test('Test Update Delivery Fee', async () => {
-    //Modify the delivery distance and verify that the delivery fee is updated
-    //Act:
-    //Setup the Mock API
+    //ACT
+    // Setup the Mock API.
     setupMock();
     //Call the page
     render(
@@ -61,9 +60,13 @@ describe('Test Order', () => {
       // Find and select the 5 mile option, like a real user would.
       screen.getByRole('option', { name: '5 miles' })
     );
-    //Assert: replace the return true.
+
+    //ASSERT
+    //Once the dropdown value for the delivery distance is changed, an API call will be made to determine the delivery fee
+    //Wait for the API call to return and the delivery fee to be updated
     await waitFor(() => {
-      return true;
+      //The delivery fee should be $5.00.
+      expect(screen.getAllByText('$5.00')).toHaveLength(1);
     });
   });
 });
